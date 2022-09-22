@@ -1,0 +1,6 @@
+{
+    "files.enableTrash": false,
+    "workbench.tree.indent": 10,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.editor.labelFormat": "short"
+}

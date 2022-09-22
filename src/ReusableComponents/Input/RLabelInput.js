@@ -28,7 +28,7 @@ class RLabelInput extends Component {
         //hay que inicializar el estado porque lo alteramos desde otro componente
         this.state = {
             toggleHelpText: false,
-            value: this.props.initialValue
+            //value: this.props.initialValue
         }
     }
 

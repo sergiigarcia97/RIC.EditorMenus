@@ -1,0 +1,25 @@
+//Creación de todo ARBOL (TABLA: rs_core_menu_tree). Array de puntos de menú:
+
+[{
+	"menuid": "d94c7dbf-67c2-4f1e-b4ef-68fad771d0a7", //El raiz tendra menuid 000...?
+	"parentmenu": "3537b628-1110-48de-b7d3-a9a00363e5f1", //Menú padre. El raiz será siempre 00000000-0000-0000-0000-000000000000
+	"itemorder": 10,
+	"usersauth": "juanjo, pedro, laura" // -> crear llamadas getusersauthbymenuid getusersnotauthbymenuid
+	"rolesauth": "administrador, tecnico"// -> crear llamadas getrolessauthbymenuid getrolesnotauthbymenuid
+	"isopened": false, //Siempre false , necesario para el render -> lo pone el transformador/bbdd
+	"menuItemId": "1ec2336b-47ad-40be-9226-fb54bf2020c5" //Hacer referencia a un guid de rs_core_menu_items	
+}]
+
+
+
+//Creación de un ACTIONS MENU (TABLA: rs_core_menu_items).
+{
+	"menuId": "1ec2336b-47ad-40be-9226-fb54bf2020c5",//vendra vacio
+	"pagename": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==",
+	"menuname": "Servicios chófer",
+	"iconId": 12, //Hace referencia a la tabla rs_system_menu_icons //crear llamada geticons
+	"system": 0, //Desde definición, siempre será 0. Los creados por nosotros pueden ser 0 o 1.
+	"type": 1, //0-Folder,1-Action
+	"optiontype": 1, //null-Folder -> 0?,  1-Formulario RICSOFT , 2-Página embebida, 3-Página para abrir fuera del Portal
+	"titleembeded": "GESTE" //De momento no se hace. Lo pide FINQUESTEIXDOR. Título que quiere que salga en los puntos de menú de páginas embebidas. A valorar.
+}

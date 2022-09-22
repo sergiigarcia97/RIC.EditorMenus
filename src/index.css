@@ -221,6 +221,13 @@ a.nav-link:hover {
   height: 1em;
 }
 
+.height-25em {
+  height: 25em;
+}
+
+.width-80 {
+  width: 80%;
+}
 
 .font-size-md {
   font-size: 1em !important;

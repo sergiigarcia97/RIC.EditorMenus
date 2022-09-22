@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "hookyqr.beautify",
+        "genuitecllc.codetogether",
+        "dbaeumer.vscode-eslint",
+        "donjayamanne.githistory",
+        "knisterpeter.vscode-github",
+        "codezombiech.gitignore",
+        "ziishaned.livereload",
+        "ms-vscode.vscode-typescript-tslint-plugin"
+    ]
+}
