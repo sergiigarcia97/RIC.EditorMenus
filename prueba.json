@@ -8,7 +8,8 @@
 	"rolesauth": "administrador, tecnico"// -> crear llamadas getrolessauthbymenuid getrolesnotauthbymenuid
 	"isopened": false, //Siempre false , necesario para el render -> lo pone el transformador/bbdd
 	"menuItemId": "1ec2336b-47ad-40be-9226-fb54bf2020c5" //Hacer referencia a un guid de rs_core_menu_items	
-}]
+	"title": ""
+	}]
 
 
 

@@ -48,20 +48,20 @@ class ItemOptions extends Component {
 
     render() {
 
-        let addBtnClassname = this.state.addEnabled === true ? 'button-black rounded' : 'button-disabled rounded';
-        let updateBtnClassname = this.state.updateEnabled === true ? 'button-black rounded' : 'button-disabled rounded';
-        let deleteBtnClassname = this.state.deleteEnabled === true ? 'button-black rounded' : 'button-disabled rounded';
+        let addBtnClassname = this.state.addEnabled === true ? 'button-red button-md' : 'button-disabled button-md';
+        let updateBtnClassname = this.state.updateEnabled === true ? 'button-black button-md' : 'button-disabled button-md';
+        let deleteBtnClassname = this.state.deleteEnabled === true ? 'button-black button-md' : 'button-disabled button-md';
 
         return (
             <ButtonsContainer>
                 <RButton
-                    id='btn-add'
-                    name='btn-add'
-                    className={addBtnClassname}
+                    id='btn-delete'
+                    name='btn-delete'
+                    className={deleteBtnClassname}
                     type='button'
-                    enabled={this.state.addEnabled}
-                    showText='Añadir'
-                    onClick={() => this.add()}
+                    enabled={this.state.deleteEnabled}
+                    showText='Eliminar'
+                    onClick={() => this.delete()}
                 />
                 <RButton
                     id='btn-update'
@@ -73,13 +73,13 @@ class ItemOptions extends Component {
                     onClick={() => this.update()}
                 />
                 <RButton
-                    id='btn-delete'
-                    name='btn-delete'
-                    className={deleteBtnClassname}
+                    id='btn-add'
+                    name='btn-add'
+                    className={addBtnClassname}
                     type='button'
-                    enabled={this.state.deleteEnabled}
-                    showText='Eliminar'
-                    onClick={() => this.delete()}
+                    enabled={this.state.addEnabled}
+                    showText='Añadir'
+                    onClick={() => this.add()}
                 />
             </ButtonsContainer>
         );

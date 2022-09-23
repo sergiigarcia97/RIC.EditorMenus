@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RIcon from '../ReusableComponents/Button/RIcon';
 import PrevisualizationMenuItems from './PrevisualizationMenuItems';
 
 class MenuPrevisualization extends Component {
@@ -8,25 +9,84 @@ class MenuPrevisualization extends Component {
     //TODO: VARIABLES DE ESTADO QUE SE PASEN AL MENUTREEOPTIONS
     render() {
         return (
-            <div id="previsualizacionMenu" className='d-flex flex-column'>
-                <div className='d-flex justify-content-between'>
-                    <h2>Titulo menú</h2>
+            <div id="previsualizacionMenu" className='d-flex flex-column border-solid-lightgray border-radius-5'>
+                <div className='d-flex align-items-center w-100 background-black color-white border-radius-5' style={{ 'height': '3em' }}>
+                    <h3 style={{ 'padding-left': '2em' }}>Menú </h3>
                 </div>
-                <div id="containerPrevisualizationMenu">
+                <div id="containerPrevisualizationMenu" style={{ 'overflowY': 'auto' }}>
                     {/* TODO: RECIBIR COMO PROP LA LISTA DE MENUTREE */}
                     <PrevisualizationMenuItems />
                 </div>
-                <div className='d-flex container-buttons-prev-items'>.
+                <div className='d-flex justify-content-evenly container-buttons-prev-items'>.
                     {/* TODO: CREAR COMPONENTE QUE TENGA ESTOS BOTONES Y RECIBA COMO PROPS SI ESTAN DISABLED/VISIBLE + ACCION A REALIZAR */}
-                    <button className='button-black rounded'>e</button>{/* editar */}
-                    <button className='button-black rounded'>e</button>{/* eliminar */}
-                    <button className='button-black rounded'>s</button>{/* subir si hay item con menor itemorder */}
-                    <button className='button-black rounded'>b</button>{/* bajar si hay item con mayor itemorder */}
-                    <button className='button-black rounded'>a</button>{/* anidar si hay item con menor itemorder */}
-                    <button className='button-black rounded'>da</button>{/* desanidar si hay item con mayor itemorder */}
-                    <button className='button-black rounded'>users</button>{/* usersauth */}
-                    <button className='button-black rounded'>roles</button>{/*rolesauth*/}
-
+                    <div className='d-flex justify-content-evenly'>
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="up-open"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="down-open"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="level-down"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="level-up"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                    </div>
+                    <div className='d-flex justify-content-evenly'>
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="user-o"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="lock"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="edit"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                        <RIcon
+                            className="modal-footer-button common-btn-props"
+                            id="btnCancelar"
+                            value="defaultValue"
+                            iconType="trash"
+                            iconSize="medium"
+                            onClick={this.toggle}
+                        />
+                    </div>
                 </div>
             </div>
         );

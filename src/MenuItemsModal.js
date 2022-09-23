@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import actionType from './common/Editor/types/actionType';
 import MenuItemType from './common/Editor/types/menuItemType';
 import ButtonsContainer from './Item/ButtonsContainer';
 import ItemList from './ItemList';
+import RButton from './ReusableComponents/Button/RButton';
 import RIcon from './ReusableComponents/Button/RIcon';
 import RModal from './ReusableComponents/Modal/RModal';
 
@@ -15,94 +17,21 @@ class MenuItemsModal extends Component {
     constructor (props) {
         super(props);
         this.toggle = this.toggle.bind(this);
-        this.selectItem = this.selectItem.bind(this);
-        this.state = initialState
+        this.actionOnClick = this.actionOnClick.bind(this);
     }
 
-    componentDidMount() {
-
-        if (this.props.modal === true) {
-            this.getFormList();
-        }
-
-    }
-
-    componentDidUpdate(prevProps) {
-        // console.log("actualizo formlistmodal")
-        if (prevProps.modal !== this.props.modal && this.props.modal === true) {
-            this.getFormList();
-        }
-    }
-
-    getFormList() {
-
-        console.log("getFormList");
-        //simulación
-        let itemList = [
-            {
-                menuId: "1ec2336b-47ad-40be-9226-fb54bf2020c5",
-                menuname: "Servicios chófer",
-                type: 1
-            }
-        ]
-        itemList.forEach(item => {
-            item.className = this.state.classToItem;
-            item.selectItem = this.selectItem;
-            Object.entries(MenuItemType).map((type, i) => {
-                if (i === item.type) {
-                    item.type = type[i];
-                }
-                return null
-            })
-        });
-        this.setState({
-            itemList: [...itemList]
-        })
-        //llamada
-        // const token = localStorage.getItem("authToken");
-        // if (token !== null && token !== "") {
-        //     let url = CORE_BASE_URL + "/GetMenuItemListNew";
-        //     const headers = {
-        //         "Content-Type": "application/json;charset=utf-8",
-        //         "Authorization": "bearer " + token.replace(/"/g, '')
-        //     }
-        //     console.log("MenuItemsModal getFormList url ->" + url);
-        //     axios
-        //         .get(url, { headers })
-        //         .then(res => {
-        //             if (res.data.Result === 0) {
-        //                 this.setState({
-        //                     itemList: JSON.parse(res.data.data)
-        //                 })
-        //             } else {
-        //             }
-        //         })
-        //         .catch(err => {
-        //         });
-        // } else {
-        //     console.log("no hay sesion activa");
-        // }
-    }
 
     toggle() {
         let parentToggle = this.props.parentToggle;
         parentToggle();
     }
 
-    selectItem(itemID) {
-        let itemList = this.state.itemList.map(item => {
-            if (item.menuId === itemID) {
-                item.className = this.state.classToSelectedItem;
-            } else {
-                item.className = this.state.classToItem;
-            }
-            return item
-        });
-        this.setState({
-            itemList: [...itemList],
-            selectedID: itemID,
-        })
+    actionOnClick(action) {
+        console.log("actionOnClick ->"+action)
+        let setAction = this.props.setAction;
+        setAction(action);
     }
+
     render() {
 
         let CLOSE_BUTTON = {};
@@ -116,8 +45,23 @@ class MenuItemsModal extends Component {
         let MODAL_TITLE = "Listado acciones menú";
         let MODAL_CLASSNAME = "";
         let MODAL_BODY = <ItemList
-            itemList={this.state.itemList}
+            itemList={this.props.itemList}
         />;
+
+        let buttonShowText = "";
+        switch (this.props.action) {
+            case actionType.ADD:
+                buttonShowText = "Añadir"
+                break;
+            case actionType.UPDATE:
+                buttonShowText = "Modificar"
+                break;
+            case actionType.DELETE:
+                buttonShowText = "Eliminar"
+                break;
+            default: break;
+        }
+
         let MODAL_FOOTER = <ButtonsContainer>
             <RIcon
                 className="modal-footer-button common-btn-props"
@@ -126,6 +70,13 @@ class MenuItemsModal extends Component {
                 iconType="cancel"
                 iconSize="medium"
                 onClick={this.toggle}
+            />
+            <RButton
+                className="button-md button-black rounded"
+                enabled={this.props.selectedID !== "" ? true : false}
+                type="button"
+                showText={buttonShowText}
+                onClick={() => this.actionOnClick(this.props.action)}
             />
         </ButtonsContainer>;
 

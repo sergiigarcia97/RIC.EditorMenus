@@ -9,6 +9,8 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 //CSS
 import './index.css';
 import './EM.css';
+//svg convertidos a icon-nombreIcono(https://medium.com/@adebalanced02/using-fontello-with-react-6bdc32b3c868)
+import "./fontello/css/ric-icons.css";
 
 //STANDALONE
 const root = ReactDOM.createRoot(document.getElementById('RICEditorMenus'));

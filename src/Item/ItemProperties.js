@@ -209,61 +209,66 @@ class ItemProperties extends Component {
         })
 
         return (
-            <div id="propiedadesItem" className='height-25em d-flex flex-column align-items-center justify-content-center border-solid-lightgray '>
-
-                <RInputLabel
-                    type="text"
-                    id="item-menuname"
-                    name="menuname"
-                    //initialValue={this.state.menuname}
-                    classToDiv="mb-3 form-floating width-80"
-                    enabled={true}
-                    labelClassName="form-label"
-                    labelText="Texto entrada:"
-                    helpText="Texto del punto de menú"
-                    className="form-control "
-                    placeholder="Texto"
-                    required={true}
-                    onChange={e => this.handleChange(e)}
-                />
-
-                {/* type */}
-                <RDropdownList
-                    initialValue={this.state.type}
-                    itemList={menuItemTypes}
-                    originKey={"type"}
-                    label={"Tipo :"}
-                    onChange={e => this.handleChange(e)}
-                    classToDiv="mb-3 form-floating width-80"
-                    className="form-select"
-                />
-
-                {/* optiontype */}
-                <RDropdownList
-                    initialValue={this.state.optionType}
-                    itemList={menuItemOptionTypes}
-                    originKey={"optionType"}
-                    label={"Tipo opción:"}
-                    onChange={e => this.handleChange(e)}
-                    classToDiv="mb-3 form-floating width-80"
-                    className="form-select"
-                />
-
-                {/* pagename */}
-                {pagename}
-
-
-                {/* iconid -> mostrar iconos + seleccionar dblclick (guardar iconid) */}
-                <button className='button-black rounded'>icono</button>
-                <div className='mt-5 w-100'>
-                    <ItemOptions
-                        menuId={this.state.menuId}
-                        addItem={() => this.addItem()}
-                        updateItem={() => this.updateItem()}
-                        deleteItem={() => this.deleteItem()}
-                    />
+            <div id="propiedadesItem" className=' border-solid-lightgray border-radius-5'>
+                <div className='d-flex align-items-center w-100 background-red color-white border-radius-5' style={{ 'height': '3em' }}>
+                    <h3 style={{ 'padding-left': '2em' }}>Editor </h3>
                 </div>
-            </div>
+                <div className='EM_container-fields-itemmenu height-25em d-flex flex-column align-items-center justify-content-center'>
+                    <RInputLabel
+                        type="text"
+                        id="item-menuname"
+                        name="menuname"
+                        //initialValue={this.state.menuname}
+                        classToDiv="mb-3 form-floating width-80"
+                        enabled={true}
+                        labelClassName="form-label"
+                        labelText="Texto entrada:"
+                        helpText="Texto del punto de menú"
+                        className="form-control "
+                        placeholder="Texto"
+                        required={true}
+                        onChange={e => this.handleChange(e)}
+                    />
+
+                    {/* type */}
+                    <RDropdownList
+                        initialValue={this.state.type}
+                        itemList={menuItemTypes}
+                        originKey={"type"}
+                        label={"Tipo :"}
+                        onChange={e => this.handleChange(e)}
+                        classToDiv="mb-3 form-floating width-80"
+                        className="form-select"
+                    />
+
+                    {/* optiontype */}
+                    <RDropdownList
+                        initialValue={this.state.optionType}
+                        itemList={menuItemOptionTypes}
+                        originKey={"optionType"}
+                        label={"Tipo opción:"}
+                        onChange={e => this.handleChange(e)}
+                        classToDiv="mb-3 form-floating width-80"
+                        className="form-select"
+                    />
+
+                    {/* pagename */}
+                    {pagename}
+
+
+                    {/* iconid -> mostrar iconos + seleccionar dblclick (guardar iconid) */}
+                    <button className='button-black rounded'>icono</button>
+                    <div className='mt-5 w-100'>
+                        <ItemOptions
+                            menuId={this.state.menuId}
+                            addItem={() => this.addItem()}
+                            updateItem={() => this.updateItem()}
+                            deleteItem={() => this.deleteItem()}
+                        />
+                    </div>
+                </div>
+
+            </div >
         );
     }
 }
