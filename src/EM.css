@@ -8,12 +8,10 @@
 .EM_container-fields-itemmenu {
     background: var(--grey-actual);
     border: 1px solid #DFDEDE;
-    border-radius: 15px;
 }
 
 .EM_previsualization-menutreeitem {
     background-color: var(--grey-actual);
     border: 1px solid #EBEBEB;
-    border-radius: 5px;
 }
 

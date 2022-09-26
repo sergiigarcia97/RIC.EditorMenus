@@ -9,86 +9,94 @@ class MenuPrevisualization extends Component {
     //TODO: VARIABLES DE ESTADO QUE SE PASEN AL MENUTREEOPTIONS
     render() {
         return (
-            <div id="previsualizacionMenu" className='d-flex flex-column border-solid-lightgray border-radius-5'>
-                <div className='d-flex align-items-center w-100 background-black color-white border-radius-5' style={{ 'height': '3em' }}>
-                    <h3 style={{ 'padding-left': '2em' }}>Menú </h3>
+            <div>
+                <div id="previsualizacionMenu" className='d-flex flex-column border-solid-lightgray border-radius-5'>
+                    <div className='d-flex align-items-center w-100 background-black color-white border-radius-5' style={{ 'height': '3em' }}>
+                        <h3 style={{ 'paddingLeft': '2em' }}>Menú </h3>
+                    </div>
+                    <div id="containerPrevisualizationMenu" style={{ 'overflowY': 'auto' }}>
+                        {/* TODO: RECIBIR COMO PROP LA LISTA DE MENUTREE */}
+                        <PrevisualizationMenuItems />
+                    </div>
+
                 </div>
-                <div id="containerPrevisualizationMenu" style={{ 'overflowY': 'auto' }}>
-                    {/* TODO: RECIBIR COMO PROP LA LISTA DE MENUTREE */}
-                    <PrevisualizationMenuItems />
-                </div>
-                <div className='d-flex justify-content-evenly container-buttons-prev-items'>.
+                <div className='d-flex justify-content-evenly container-buttons-prev-items height-3em mt-3 border-solid-lightgray rounded'>
                     {/* TODO: CREAR COMPONENTE QUE TENGA ESTOS BOTONES Y RECIBA COMO PROPS SI ESTAN DISABLED/VISIBLE + ACCION A REALIZAR */}
-                    <div className='d-flex justify-content-evenly'>
+                    <div className='d-flex justify-content-evenly align-items-center'>
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-black m-1 rounded"
+                            id="btnSubir"
                             value="defaultValue"
                             iconType="up-open"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
                         />
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-black m-1 rounded"
+                            id="btnBajar"
                             value="defaultValue"
                             iconType="down-open"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
                         />
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-black m-1 rounded"
+                            id="btnDesanidar"
                             value="defaultValue"
                             iconType="level-down"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
                         />
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-black m-1 rounded"
+                            id="btnAnidar"
                             value="defaultValue"
                             iconType="level-up"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
                         />
                     </div>
-                    <div className='d-flex justify-content-evenly'>
+                    <div className='d-flex justify-content-evenly align-items-center'>
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-grey m-1 rounded"
+                            id="btnUsuarios"
                             value="defaultValue"
                             iconType="user-o"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
+                            tooltipText="Usuarios"
                         />
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-grey m-1 rounded"
+                            id="btnRoles"
                             value="defaultValue"
                             iconType="lock"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
+                            tooltipText="Roles"
                         />
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-grey m-1 rounded"
+                            id="btnEditar"
                             value="defaultValue"
                             iconType="edit"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
+                            tooltipText="Editar"
                         />
                         <RIcon
-                            className="modal-footer-button common-btn-props"
-                            id="btnCancelar"
+                            className="button-red m-1 rounded"
+                            id="btnEliminar"
                             value="defaultValue"
                             iconType="trash"
-                            iconSize="medium"
+                            iconSize="md"
                             onClick={this.toggle}
+                            tooltipText="Eliminar"
                         />
                     </div>
                 </div>
             </div>
+
         );
     }
 }

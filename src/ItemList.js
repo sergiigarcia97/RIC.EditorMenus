@@ -58,9 +58,9 @@ export default class ItemList extends Component {
             <tbody>
                 {this.state.itemList.map((item, i) => {
                     return <tr id={"item-" + item.menuId} key={"item-" + item.menuId} onClick={(e) => item.selectItem(item.menuId)} className={item.className}>
-                        <td onDoubleClick={() => item.openForm(item.menuId)} onClick={() => item.selectItem(item.menuId)} className='text-align-center '>{i + 1}</td>
-                        <td onDoubleClick={() => item.openForm(item.menuId)} onClick={() => item.selectItem(item.menuId)} className=' '>{item.menuname}</td>
-                        <td onDoubleClick={() => item.openForm(item.menuId)} onClick={() => item.selectItem(item.menuId)} className=' '>{item.type}</td>
+                        <td onDoubleClick={() => item.getMenuItemByID(item.menuId)} onClick={() => item.selectItem(item.menuId)} className='text-align-center '>{i + 1}</td>
+                        <td onDoubleClick={() => item.getMenuItemByID(item.menuId)} onClick={() => item.selectItem(item.menuId)} className=' '>{item.menuName}</td>
+                        <td onDoubleClick={() => item.getMenuItemByID(item.menuId)} onClick={() => item.selectItem(item.menuId)} className=' '>{item.type}</td>
                         
                     </tr>
                 })}

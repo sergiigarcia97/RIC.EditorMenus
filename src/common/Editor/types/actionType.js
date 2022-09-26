@@ -5,7 +5,8 @@
  const actionType = {
     ADD: "add",
     UPDATE: "update",
-    DELETE: "delete"
+    DELETE: "delete",
+    NEW: "new"
     
 }
 export default actionType;

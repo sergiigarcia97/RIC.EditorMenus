@@ -16,8 +16,8 @@
 //Creación de un ACTIONS MENU (TABLA: rs_core_menu_items).
 {
 	"menuId": "1ec2336b-47ad-40be-9226-fb54bf2020c5",//vendra vacio
-	"pagename": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==",
-	"menuname": "Servicios chófer",
+	"pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==",
+	"menuName": "Servicios chófer",
 	"iconId": 12, //Hace referencia a la tabla rs_system_menu_icons //crear llamada geticons
 	"system": 0, //Desde definición, siempre será 0. Los creados por nosotros pueden ser 0 o 1.
 	"type": 1, //0-Folder,1-Action

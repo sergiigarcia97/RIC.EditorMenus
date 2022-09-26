@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import actionType from '../common/Editor/types/actionType';
 import { CORE_BASE_URL, DES_BASE_URL } from '../common/Editor/types/constants';
 import MenuItemOptionType from '../common/Editor/types/menuItemOptionType';
 import MenuItemType from '../common/Editor/types/menuItemType';
@@ -8,16 +9,16 @@ import RInputLabel from '../ReusableComponents/Input/RInputLabel';
 import ButtonsContainer from './ButtonsContainer';
 import ItemOptions from './ItemOptions';
 let emptyIntialState = {
-    menuname: "",
-    pagename: "",
+    menuName: "",
+    pageName: "",
     iconId: 99,//99 -> en blanco
     type: MenuItemType.ACTION,
     optionType: MenuItemOptionType.RICFORM,
     menuId: "",
 }
 let fullInitialState = {
-    menuname: "menuname simulado",
-    pagename: "pagename",
+    menuName: "menuName simulado",
+    pageName: "pageName",
     iconId: 99,//99 -> en blanco
     type: MenuItemType.ACTION,
     optionType: MenuItemOptionType.RICFORM,
@@ -36,24 +37,19 @@ class ItemProperties extends Component {
     }
 
     componentDidMount() {
-        let foundMenuID = false;
-        if (this.props.menuId !== undefined) {
-            if (this.props.menuId !== null) {
-                foundMenuID = true;
-                let fullState = { ...fullInitialState };
-                fullState.menuId = this.props.menuId;
-                this.setState({
-                    ...fullState
-                })
-            }
-        }
-        if (!foundMenuID) {
+        
+        //console.log("ItemProperties componentDidMount state", this.state)
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.item !== null) {
             this.setState({
-                ...emptyIntialState
+                ...this.props.item
             })
         }
-        //console.log("ItemProperties componentDidMount state",this.state)
     }
+
+    
 
     handleChange(event) {
         const target = event.target;
@@ -98,6 +94,9 @@ class ItemProperties extends Component {
 
         console.log("addItem");
 
+
+
+
         const token = localStorage.getItem("authToken");
         if (token !== null && token !== "") {
             //let url = CORE_BASE_URL + "/CreateMenuItem";
@@ -107,11 +106,13 @@ class ItemProperties extends Component {
                 "Authorization": "bearer " + token.replace(/"/g, '')
             }
             let body = { ...this.state };
+            body.type = Object.values(MenuItemType).indexOf(this.state.type);
+            body.optionType = Object.values(MenuItemOptionType).indexOf(this.state.optionType);
             console.log("ItemProperties addItem url ->" + url, body);
             axios
                 .post(url, JSON.stringify(body), { headers })
                 .then(res => {
-                    if (res.data.Result === 0) {
+                    if (res.data.result === 0) {
                     } else {
                     }
                 })
@@ -126,7 +127,6 @@ class ItemProperties extends Component {
         console.log("updateItem");
         const token = localStorage.getItem("authToken");
         if (token !== null && token !== "") {
-            //let url = CORE_BASE_URL + "/CreateMenuItem";
             let url = CORE_BASE_URL + "/UpdateMenuItem";
             const headers = {
                 "Content-Type": "application/json;charset=utf-8",
@@ -137,7 +137,7 @@ class ItemProperties extends Component {
             axios
                 .put(url, JSON.stringify(body), { headers })
                 .then(res => {
-                    if (res.data.Result === 0) {
+                    if (res.data.result === 0) {
                     } else {
                     }
                 })
@@ -152,7 +152,6 @@ class ItemProperties extends Component {
         console.log("deleteItem");
         const token = localStorage.getItem("authToken");
         if (token !== null && token !== "") {
-            //let url = CORE_BASE_URL + "/CreateMenuItem";
             let url = CORE_BASE_URL + "/DeleteMenuItem/" + this.state.menuId;
             const headers = {
                 "Content-Type": "application/json;charset=utf-8",
@@ -163,7 +162,7 @@ class ItemProperties extends Component {
             axios
                 .delete(url, { headers })
                 .then(res => {
-                    if (res.data.Result === 0) {
+                    if (res.data.result === 0) {
                     } else {
                     }
                 })
@@ -175,14 +174,14 @@ class ItemProperties extends Component {
     }
 
     render() {
-        let pagename;
-        pagename = this.state.type === MenuItemType.ACTION ?
+        let pageName;
+        pageName = this.state.type === MenuItemType.ACTION ?
             //TODO: mostrar dropdown con páginas (como en el portal o el listado formularios)
             <RInputLabel
-                //initialValue={this.state.pagename}
+                initialValue={this.state.pageName}
                 type="text"
-                id="item-pagename"
-                name="pagename"
+                id="item-pageName"
+                name="pageName"
                 classToDiv="mb-3 form-floating width-80"
                 enabled={true}
                 labelClassName="form-label"
@@ -211,14 +210,14 @@ class ItemProperties extends Component {
         return (
             <div id="propiedadesItem" className=' border-solid-lightgray border-radius-5'>
                 <div className='d-flex align-items-center w-100 background-red color-white border-radius-5' style={{ 'height': '3em' }}>
-                    <h3 style={{ 'padding-left': '2em' }}>Editor </h3>
+                    <h3 style={{ 'paddingLeft': '2em' }}>Editor </h3>
                 </div>
                 <div className='EM_container-fields-itemmenu height-25em d-flex flex-column align-items-center justify-content-center'>
                     <RInputLabel
                         type="text"
-                        id="item-menuname"
-                        name="menuname"
-                        //initialValue={this.state.menuname}
+                        id="item-menuName"
+                        name="menuName"
+                        initialValue={this.state.menuName}
                         classToDiv="mb-3 form-floating width-80"
                         enabled={true}
                         labelClassName="form-label"
@@ -241,7 +240,7 @@ class ItemProperties extends Component {
                         className="form-select"
                     />
 
-                    {/* optiontype */}
+                    {/* optionType */}
                     <RDropdownList
                         initialValue={this.state.optionType}
                         itemList={menuItemOptionTypes}
@@ -252,8 +251,8 @@ class ItemProperties extends Component {
                         className="form-select"
                     />
 
-                    {/* pagename */}
-                    {pagename}
+                    {/* pageName */}
+                    {pageName}
 
 
                     {/* iconid -> mostrar iconos + seleccionar dblclick (guardar iconid) */}

@@ -27,9 +27,12 @@ class MenuItemsModal extends Component {
     }
 
     actionOnClick(action) {
-        console.log("actionOnClick ->"+action)
-        let setAction = this.props.setAction;
-        setAction(action);
+        console.log("actionOnClick ->" + action)
+        // let setAction = this.props.setAction;
+        // setAction(action);
+        let getMenuItemByID = this.props.getMenuItemByID;
+        getMenuItemByID(this.props.selectedID);
+        this.toggle();
     }
 
     render() {
@@ -72,7 +75,7 @@ class MenuItemsModal extends Component {
                 onClick={this.toggle}
             />
             <RButton
-                className="button-md button-black rounded"
+                className={this.props.selectedID !== "" ? "button-md button-black rounded" : "button-md button-black disabledIcon rounded"}
                 enabled={this.props.selectedID !== "" ? true : false}
                 type="button"
                 showText={buttonShowText}

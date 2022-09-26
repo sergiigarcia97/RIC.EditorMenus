@@ -15,7 +15,7 @@ export default class RDropdownList extends Component {
             
         })
 
-        console.log("optionSelected "+this.props.originKey+" -> "+optionSelected);
+        //console.log("optionSelected "+this.props.originKey+" -> "+optionSelected);
 
         let label = this.props.label ? this.props.label : null;
 
