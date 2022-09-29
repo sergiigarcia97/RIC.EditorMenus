@@ -1,89 +1,110 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import actionType from '../common/Editor/types/actionType';
+import Box from '../ReusableComponents/Box/Box';
 import RButton from '../ReusableComponents/Button/RButton';
-import ButtonsContainer from './ButtonsContainer';
 let initialState = {
-    addEnabled: true,
-    updateEnabled: true,
-    deleteEnabled: true
+    addEnabled: false,
+    updateEnabled: false,
+    deleteEnabled: false
 }
-class ItemOptions extends Component {
-    constructor (props) {
-        super(props);
-        this.state = initialState
-    }
+function ItemOptions(props) {
+    const [addEnabled, setAddEnabled] = useState(false);
+    const [updateEnabled, setUpdateEnabled] = useState(false);
+    const [deleteEnabled, setDeleteEnabled] = useState(false);
 
-    componentDidMount() {
-        if (this.props.menuId !== undefined) {
-            if (this.props.menuId !== "") {
-                this.setState({
-                    addEnabled: false
-                })
-            } else {
-                this.setState({
-                    updateEnabled: false,
-                    deleteEnabled: false
-                })
+
+    useEffect(() => {
+        const changeButtonsEnabledState = () => {
+            switch (props.action) {
+                case actionType.NEWITEM:
+                case actionType.NEWITEMANDITEMTREE:
+                    setAddEnabled(true);
+                    setUpdateEnabled(false);
+                    setDeleteEnabled(false);
+                    break;
+                case actionType.UPDATEITEM:
+                    if (props.item.menuId === "") {
+                        setAddEnabled(false);
+                        setUpdateEnabled(false);
+                        setDeleteEnabled(false);
+
+                    } else {
+                        setAddEnabled(false);
+                        setUpdateEnabled(true);
+                        setDeleteEnabled(false);
+                    }
+
+                    break;
+                case actionType.DELETEITEM:
+                    if (props.item.menuId === "") {
+                        setAddEnabled(false);
+                        setUpdateEnabled(false);
+                        setDeleteEnabled(false);
+                    } else {
+                        setAddEnabled(false);
+                        setUpdateEnabled(false);
+                        setDeleteEnabled(true);
+                    }
+                    break;
+                default:
+                    setAddEnabled(false);
+                    setUpdateEnabled(false);
+                    setDeleteEnabled(false);
+                    break;
             }
-
         }
-    }
-
-    add() {
+        changeButtonsEnabledState();
+    }, [props.item.menuId,props.action])
+    const addOnClick = () => {
         console.log("add")
-        var addItem = this.props.addItem;
+        var addItem = props.addItem;
         addItem()
     }
 
-    update() {
+    const updateOnClick = () => {
         console.log("update")
-        var updateItem = this.props.updateItem;
+        var updateItem = props.updateItem;
         updateItem();
     }
 
-    delete() {
+    const deleteOnClick = () => {
         console.log("delete")
-        var deleteItem = this.props.deleteItem;
+        var deleteItem = props.deleteItem;
         deleteItem();
     }
 
-    render() {
+    return (
+        <Box className='d-flex w-100 justify-content-evenly m-2'>
+            <RButton
+                id='btn-add'
+                name='btn-add'
+                className={addEnabled === true ? 'button-red button-md' : 'button-disabled button-md'}
+                type='button'
+                enabled={addEnabled}
+                showText='Añadir'
+                onClick={() => addOnClick()}
+            />
+            <RButton
+                id='btn-update'
+                name='btn-update'
+                className={updateEnabled === true ? 'button-black button-md' : 'button-disabled button-md'}
+                type='button'
+                enabled={updateEnabled}
+                showText='Actualizar'
+                onClick={() => updateOnClick()}
+            />
+            <RButton
+                id='btn-delete'
+                name='btn-delete'
+                className={deleteEnabled === true ? 'button-black button-md' : 'button-disabled button-md'}
+                type='button'
+                enabled={deleteEnabled}
+                showText='Eliminar'
+                onClick={() => deleteOnClick()}
+            />
+        </Box>
+    );
 
-        let addBtnClassname = this.state.addEnabled === true ? 'button-red button-md' : 'button-disabled button-md';
-        let updateBtnClassname = this.state.updateEnabled === true ? 'button-black button-md' : 'button-disabled button-md';
-        let deleteBtnClassname = this.state.deleteEnabled === true ? 'button-black button-md' : 'button-disabled button-md';
-
-        return (
-            <ButtonsContainer>
-                <RButton
-                    id='btn-delete'
-                    name='btn-delete'
-                    className={deleteBtnClassname}
-                    type='button'
-                    enabled={this.state.deleteEnabled}
-                    showText='Eliminar'
-                    onClick={() => this.delete()}
-                />
-                <RButton
-                    id='btn-update'
-                    name='btn-update'
-                    className={updateBtnClassname}
-                    type='button'
-                    enabled={this.state.updateEnabled}
-                    showText='Actualizar'
-                    onClick={() => this.update()}
-                />
-                <RButton
-                    id='btn-add'
-                    name='btn-add'
-                    className={addBtnClassname}
-                    type='button'
-                    enabled={this.state.addEnabled}
-                    showText='Añadir'
-                    onClick={() => this.add()}
-                />
-            </ButtonsContainer>
-        );
-    }
 }
 
 export default ItemOptions;

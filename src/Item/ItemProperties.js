@@ -1,14 +1,15 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import actionType from '../common/Editor/types/actionType';
 import { CORE_BASE_URL, DES_BASE_URL } from '../common/Editor/types/constants';
 import MenuItemOptionType from '../common/Editor/types/menuItemOptionType';
 import MenuItemType from '../common/Editor/types/menuItemType';
 import RDropdownList from '../ReusableComponents/Dropdown/RDropdownList';
 import RInputLabel from '../ReusableComponents/Input/RInputLabel';
-import ButtonsContainer from './ButtonsContainer';
+
 import ItemOptions from './ItemOptions';
 let emptyIntialState = {
+    title: "",
     menuName: "",
     pageName: "",
     iconId: 99,//99 -> en blanco
@@ -17,6 +18,7 @@ let emptyIntialState = {
     menuId: "",
 }
 let fullInitialState = {
+    title: "menuName cambiado",
     menuName: "menuName simulado",
     pageName: "pageName",
     iconId: 99,//99 -> en blanco
@@ -25,60 +27,42 @@ let fullInitialState = {
     menuId: "6dba91e3-19c7-4712-b225-8a4bf87ecfb0"
 }
 
-class ItemProperties extends Component {
+function ItemProperties(props) {
 
-    constructor (props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.addItem = this.addItem.bind(this);
-        this.updateItem = this.updateItem.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
-        this.state = emptyIntialState
-    }
+    const [item, setItem] = useState({...props.item});
+    useEffect(() => {
+        setItem(props.item);
+    }, [props.item])
 
-    componentDidMount() {
-        
-        //console.log("ItemProperties componentDidMount state", this.state)
-    }
-
-    componentDidUpdate(prevProps) {
-        if(this.props.item !== null) {
-            this.setState({
-                ...this.props.item
-            })
-        }
-    }
-
-    
-
-    handleChange(event) {
+    const handleChange = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         switch (name) {
             case "type":
                 if (value === MenuItemType.FOLDER) {
-                    this.setState({
-                        [name]: value,
-                        optionType: MenuItemOptionType.FOLDER
-                    });
+                    let newItem = { [name]: value, optionType: MenuItemOptionType.FOLDER };
+                    setItem(prevItem => ({
+                        ...prevItem, ...newItem
+                    }))
                 } else {
-                    this.setState({
-                        [name]: value
-                    });
+                    let newItem = { [name]: value };
+                    setItem(prevItem => ({
+                        ...prevItem, ...newItem
+                    }))
                 }
-
                 break;
             case "optionType":
                 if (value === MenuItemOptionType.FOLDER) {
-                    this.setState({
-                        [name]: value,
-                        type: MenuItemType.FOLDER
-                    });
+                    let newItem = { [name]: value, optionType: MenuItemOptionType.FOLDER };
+                    setItem(prevItem => ({
+                        ...prevItem, ...newItem
+                    }))
                 } else {
-                    this.setState({
-                        [name]: value
-                    });
+                    let newItem = { [name]: value };
+                    setItem(prevItem => ({
+                        ...prevItem, ...newItem
+                    }))
                 }
                 break;
             default:
@@ -87,16 +71,10 @@ class ItemProperties extends Component {
                 });
                 break;
         }
-
     }
 
-    addItem() {
-
+    const addItem = () => {
         console.log("addItem");
-
-
-
-
         const token = localStorage.getItem("authToken");
         if (token !== null && token !== "") {
             //let url = CORE_BASE_URL + "/CreateMenuItem";
@@ -105,9 +83,9 @@ class ItemProperties extends Component {
                 "Content-Type": "application/json;charset=utf-8",
                 "Authorization": "bearer " + token.replace(/"/g, '')
             }
-            let body = { ...this.state };
-            body.type = Object.values(MenuItemType).indexOf(this.state.type);
-            body.optionType = Object.values(MenuItemOptionType).indexOf(this.state.optionType);
+            let body = { ...item };
+            body.type = Object.values(MenuItemType).indexOf(item.type);
+            body.optionType = Object.values(MenuItemOptionType).indexOf(item.optionType);
             console.log("ItemProperties addItem url ->" + url, body);
             axios
                 .post(url, JSON.stringify(body), { headers })
@@ -123,7 +101,7 @@ class ItemProperties extends Component {
         }
     }
 
-    updateItem() {
+    const updateItem = () => {
         console.log("updateItem");
         const token = localStorage.getItem("authToken");
         if (token !== null && token !== "") {
@@ -132,7 +110,7 @@ class ItemProperties extends Component {
                 "Content-Type": "application/json;charset=utf-8",
                 "Authorization": "bearer " + token.replace(/"/g, '')
             }
-            let body = { ...this.state };
+            let body = { ...item };
             console.log("ItemProperties addItem url ->" + url, body);
             axios
                 .put(url, JSON.stringify(body), { headers })
@@ -148,16 +126,16 @@ class ItemProperties extends Component {
         }
     }
 
-    deleteItem() {
+    const deleteItem = () => {
         console.log("deleteItem");
         const token = localStorage.getItem("authToken");
         if (token !== null && token !== "") {
-            let url = CORE_BASE_URL + "/DeleteMenuItem/" + this.state.menuId;
+            let url = CORE_BASE_URL + "/DeleteMenuItem/" + item.menuId;
             const headers = {
                 "Content-Type": "application/json;charset=utf-8",
                 "Authorization": "bearer " + token.replace(/"/g, '')
             }
-            let body = { ...this.state };
+            let body = { ...item };
             console.log("ItemProperties addItem url ->" + url, body);
             axios
                 .delete(url, { headers })
@@ -173,103 +151,115 @@ class ItemProperties extends Component {
         }
     }
 
-    render() {
-        let pageName;
-        pageName = this.state.type === MenuItemType.ACTION ?
-            //TODO: mostrar dropdown con páginas (como en el portal o el listado formularios)
-            <RInputLabel
-                initialValue={this.state.pageName}
-                type="text"
-                id="item-pageName"
-                name="pageName"
-                classToDiv="mb-3 form-floating width-80"
-                enabled={true}
-                labelClassName="form-label"
-                labelText="Página :"
-                helpText="Página "
-                className="form-control"
-                placeholder="Texto"
-                required={true}
-                onChange={e => this.handleChange(e)}
-            /> : null;
+    let inputsEnabled = props.action !== actionType.ADDITEMTREE ? true : false;
 
-        let menuItemTypes = Object.entries(MenuItemType).map(([key, value]) => {
-            return {
-                key: key,
-                value: value
-            }
-        })
+    let pageName;
+    pageName = item.type === MenuItemType.ACTION ?
+        //TODO: mostrar dropdown con páginas (como en el portal o el listado formularios)
+        <RInputLabel
+            initialValue={item.pageName}
+            type="text"
+            id="item-pageName"
+            name="pageName"
+            classToDiv="m-2 form-floating width-80"
+            enabled={inputsEnabled}
+            labelClassName="form-label"
+            labelText="Página :"
+            helpText="Página "
+            className="form-control"
+            placeholder="Texto"
+            required={true}
+            onChange={e => this.handleChange(e)}
+        /> : null;
 
-        let menuItemOptionTypes = Object.entries(MenuItemOptionType).map(([key, value]) => {
-            return {
-                key: key,
-                value: value
-            }
-        })
+    let menuItemTypes = Object.entries(MenuItemType).map(([key, value]) => {
+        return {
+            key: key,
+            value: value
+        }
+    })
 
-        return (
-            <div id="propiedadesItem" className=' border-solid-lightgray border-radius-5'>
-                <div className='d-flex align-items-center w-100 background-red color-white border-radius-5' style={{ 'height': '3em' }}>
-                    <h3 style={{ 'paddingLeft': '2em' }}>Editor </h3>
-                </div>
-                <div className='EM_container-fields-itemmenu height-25em d-flex flex-column align-items-center justify-content-center'>
-                    <RInputLabel
+    let menuItemOptionTypes = Object.entries(MenuItemOptionType).map(([key, value]) => {
+        return {
+            key: key,
+            value: value
+        }
+    })
+
+    return (
+        <div id="propiedadesItem" className=' border-solid-lightgray border-radius-5'>
+            <div className='d-flex align-items-center w-100 background-red color-white border-radius-5' style={{ 'height': '3em' }}>
+                <h3 style={{ 'paddingLeft': '2em' }}>Editor </h3>
+            </div>
+            <div className='EM_container-fields-itemmenu d-flex flex-column align-items-center justify-content-center'>
+                <div className='mb-3'></div>
+                {/* <RInputLabel
                         type="text"
-                        id="item-menuName"
-                        name="menuName"
-                        initialValue={this.state.menuName}
-                        classToDiv="mb-3 form-floating width-80"
-                        enabled={true}
+                        id="item-title"
+                        name="title"
+                        initialValue={this.state.title}
+                        classToDiv="m-2 form-floating width-80"
+                        enabled={inputsEnabled}
                         labelClassName="form-label"
                         labelText="Texto entrada:"
                         helpText="Texto del punto de menú"
                         className="form-control "
                         placeholder="Texto"
                         required={true}
-                        onChange={e => this.handleChange(e)}
+                        onChange={e => handleChange(e)}
+                    /> */}
+                <RInputLabel
+                    type="text"
+                    id="item-menuName"
+                    name="menuName"
+                    initialValue={item.menuName}
+                    classToDiv="m-2 form-floating width-80"
+                    enabled={inputsEnabled}
+                    labelClassName="form-label"
+                    labelText="Título:"
+                    helpText="Título del punto de menú"
+                    className="form-control "
+                    placeholder="Texto"
+                    required={true}
+                    onChange={e => handleChange(e)}
+                />
+                {/* type */}
+                <RDropdownList
+                    initialValue={item.type}
+                    itemList={menuItemTypes}
+                    originKey={"type"}
+                    label={"Tipo :"}
+                    onChange={e => handleChange(e)}
+                    classToDiv="m-2 form-floating width-80"
+                    className={inputsEnabled === true ? "form-select" : "form-select disabledIcon"}
+                />
+                {/* optionType */}
+                <RDropdownList
+                    initialValue={item.optionType}
+                    itemList={menuItemOptionTypes}
+                    originKey={"optionType"}
+                    label={"Tipo opción:"}
+                    onChange={e => handleChange(e)}
+                    classToDiv="m-2 form-floating width-80"
+                    className={inputsEnabled === true ? "form-select" : "form-select disabledIcon"}
+                />
+                {/* pageName */}
+                {pageName}
+                {/* iconid -> mostrar iconos + seleccionar dblclick (guardar iconid) */}
+                <button className='button-black rounded'>icono</button>
+                <div className='mt-5 w-100'>
+                    <ItemOptions
+                        action={props.action}
+                        menuId={item.menuId}
+                        item={item}
+                        addItem={() => addItem()}
+                        updateItem={() => updateItem()}
+                        deleteItem={() => deleteItem()}
                     />
-
-                    {/* type */}
-                    <RDropdownList
-                        initialValue={this.state.type}
-                        itemList={menuItemTypes}
-                        originKey={"type"}
-                        label={"Tipo :"}
-                        onChange={e => this.handleChange(e)}
-                        classToDiv="mb-3 form-floating width-80"
-                        className="form-select"
-                    />
-
-                    {/* optionType */}
-                    <RDropdownList
-                        initialValue={this.state.optionType}
-                        itemList={menuItemOptionTypes}
-                        originKey={"optionType"}
-                        label={"Tipo opción:"}
-                        onChange={e => this.handleChange(e)}
-                        classToDiv="mb-3 form-floating width-80"
-                        className="form-select"
-                    />
-
-                    {/* pageName */}
-                    {pageName}
-
-
-                    {/* iconid -> mostrar iconos + seleccionar dblclick (guardar iconid) */}
-                    <button className='button-black rounded'>icono</button>
-                    <div className='mt-5 w-100'>
-                        <ItemOptions
-                            menuId={this.state.menuId}
-                            addItem={() => this.addItem()}
-                            updateItem={() => this.updateItem()}
-                            deleteItem={() => this.deleteItem()}
-                        />
-                    </div>
                 </div>
-
-            </div >
-        );
-    }
+            </div>
+        </div >
+    );
 }
 
 export default ItemProperties;

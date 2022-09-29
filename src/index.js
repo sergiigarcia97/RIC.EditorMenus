@@ -9,14 +9,21 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 //CSS
 import './index.css';
 import './EM.css';
+//CSS importado del dnd de menus
+import './Menu/styles.css';
 //svg convertidos a icon-nombreIcono(https://medium.com/@adebalanced02/using-fontello-with-react-6bdc32b3c868)
 import "./fontello/css/ric-icons.css";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 //STANDALONE
 const root = ReactDOM.createRoot(document.getElementById('RICEditorMenus'));
 root.render(
   <React.StrictMode>
-    <App />
+    <DndProvider backend={HTML5Backend}>
+      <App />
+    </DndProvider>
+
   </React.StrictMode>
 );
 //CORE (PORTAL)

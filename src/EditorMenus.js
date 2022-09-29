@@ -1,112 +1,174 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import actionType from './common/Editor/types/actionType';
 import { CORE_BASE_URL, DES_BASE_URL } from './common/Editor/types/constants';
 import MenuItemOptionType from './common/Editor/types/menuItemOptionType';
 import MenuItemType from './common/Editor/types/menuItemType';
-import ButtonsContainer from './Item/ButtonsContainer';
+import Box from './ReusableComponents/Box/Box';
 import ItemProperties from './Item/ItemProperties';
 import MenuPrevisualization from './Menu/MenuPrevisualization';
 import MenuItemsModal from './MenuItemsModal';
-let initialState = {
-    toggleMenuItemsModal: false,
-    action: "",
-    classToItem: "form-list-item",
-    classToSelectedItem: "form-list-item-selected",
-    itemList: [],
-    selectedID: "",
-    item: null
+import menuTreeDefaultState, { menuTreeEmptyState } from './menuTreeDefaultState';
+
+let itemInitialState = {
+    title: "",
+    menuName: "",
+    pageName: "",
+    iconId: 99,//99 -> en blanco
+    type: MenuItemType.ACTION,
+    optionType: MenuItemOptionType.RICFORM,
+    menuId: "",
 }
-class EditorMenus extends Component {
-    constructor (props) {
-        super(props);
-        this.toggleMenuItemsModal = this.toggleMenuItemsModal.bind(this);
-        this.selectItem = this.selectItem.bind(this);
-        this.setAction = this.setAction.bind(this);
-        this.newOnClick = this.newOnClick.bind(this);
-        this.addOnClick = this.addOnClick.bind(this);
-        this.updateOnClick = this.updateOnClick.bind(this);
-        this.deleteOnClick = this.deleteOnClick.bind(this);
-        this.getMenuItemByID = this.getMenuItemByID.bind(this);
-        this.state = initialState
+
+function EditorMenus() {
+    const [toggleMenuItemsModal, setToggleMenuItemsModal] = useState(false);
+    const [action, setAction] = useState(actionType.NEWITEM);
+    const [itemList, setItemList] = useState([]);
+    const [selectedID, setSelectedID] = useState("");
+    const [item, setItem] = useState(itemInitialState);
+    const [menuTreeList, setMenuTreeList] = useState(menuTreeDefaultState);
+
+    const onMenuChange = (newMenuState) => {
+        setMenuTreeList(newMenuState)
     }
 
-    async toggleMenuItemsModal() {
-        if (this.state.toggleMenuItemsModal === false) {
-            await this.getFormList();
-            this.setState({
-                selectedID: ""
-            });
+    const handleToggleMenuItemsModal = async () => {
+        if (toggleMenuItemsModal === false) {
+            await getMenuItemList();
+            setSelectedID("");
+            setItem(itemInitialState);
         }
-        // } else {
-        //     let newState = {...initialState};
-        //     newState.toggleMenuItemsModal = true;
-        //     this.setState({
-        //         ...newState
-        //     })
-        // }
-        this.setState(prevState => ({
-            toggleMenuItemsModal: !prevState.toggleMenuItemsModal,
-        }))
+        if (toggleMenuItemsModal === true) {
+            setItemList([]);
+        }
+        setToggleMenuItemsModal(!toggleMenuItemsModal);
     }
 
-    selectItem(itemID) {
-        let itemList = this.state.itemList.map(item => {
-            if (item.menuId === itemID) {
-                item.className = this.state.classToSelectedItem;
-            } else {
-                item.className = this.state.classToItem;
+    const selectItem = (itemID) => {
+        setSelectedID(itemID);
+    }
+
+    const dblClickItem = async (itemID,actionP) => {
+        console.log("dblClickItem itemID ->" + itemID)
+        console.log("dblClickItem action state ->" + action)
+        console.log("dblClickItem action param ->" + actionP)
+        setSelectedID(itemID);
+        setAction(actionP);
+        handleModalSelectItemOnClick(actionP)
+        // setAction(actionP)
+        // await handleGetMenuItemByID(itemID);
+        // handleToggleMenuItemsModal();
+        //setAction(action);
+        //handleAction(actionType.NEWITEM);
+
+    }
+
+    const getMenuItemByID = async (selectedID) => {
+        //simulación
+        let apiResponse = {
+            "result": 0,
+            "data": {
+                "menuId": selectedID,
+                "pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==",
+                "menuName": "Servicios chófer",
+                "iconId": 11,
+                "system": false,
+                "type": 1,
+                "optionType": 1,
+                "title": "PM - Servicios chófer",
+                //TODO: añadir menutreeid
             }
-            return item
+        }
+        let item = { ...apiResponse.data };
+        Object.entries(MenuItemType).map((type, i) => {
+            if (i === item.type) {
+                item.type = type[i];
+            }
+            return null
         });
-        this.setState({
-            itemList: [...itemList],
-            selectedID: itemID,
-        })
-    }
-
-    getMenuItemByID(selectedID) {
-        const token = localStorage.getItem("authToken");
-        if (token !== null && token !== "") {
-            let url = CORE_BASE_URL + "/GetMenuItembyID/" + selectedID;
-            const headers = {
-                "Content-Type": "application/json;charset=utf-8",
-                "Authorization": "bearer " + token.replace(/"/g, '')
+        Object.entries(MenuItemOptionType).map((optionType, i) => {
+            if (i === item.optionType) {
+                item.optionType = optionType[i];
             }
-            console.log("ItemProperties GetMenuItembyID url ->" + url);
-            axios
-                .get(url, { headers })
-                .then(res => {
-                    console.log("respuesta " + url, res);
-                    if (res.data.result === 0) {
-                        let item = { ...res.data.data };
-                        Object.entries(MenuItemType).map((type, i) => {
-                            if (i === item.type) {
-                                item.type = type[i];
-                            }
-                            return null
-                        })
-                        Object.entries(MenuItemOptionType).map((optionType, i) => {
-                            if (i === item.optionType) {
-                                item.optionType = optionType[i];
-                            }
-                            return null
-                        })
-                        console.log("ItemProperties getitembyid attrs ->", item);
-                        this.setState({
-                            ...item 
-                        })
-                    } else {
-                    }
-                })
-                .catch(err => {
-                });
-        } else {
-            console.log("no hay sesion activa");
+            return null
+        });
+
+        console.log("item", item)
+        setItem(prevItem => ({
+            ...item
+        }));
+
+        //llamada
+        // const token = localStorage.getItem("authToken");
+        // if (token !== null && token !== "") {
+        //     let url = CORE_BASE_URL + "/GetMenuItembyID/" + selectedID;
+        //     const headers = {
+        //         "Content-Type": "application/json;charset=utf-8",
+        //         "Authorization": "bearer " + token.replace(/"/g, '')
+        //     }
+        //     console.log("ItemProperties GetMenuItembyID url ->" + url);
+        //     axios
+        //         .get(url, { headers })
+        //         .then(res => {
+        //             console.log("respuesta " + url, res);
+        //             if (res.data.result === 0) {
+        //                 let item = { ...res.data.data };
+        //                 Object.entries(MenuItemType).map((type, i) => {
+        //                     if (i === item.type) {
+        //                         item.type = type[i];
+        //                     }
+        //                     return null
+        //                 })
+        //                 Object.entries(MenuItemOptionType).map((optionType, i) => {
+        //                     if (i === item.optionType) {
+        //                         item.optionType = optionType[i];
+        //                     }
+        //                     return null
+        //                 })
+        //                 console.log("ItemProperties getitembyid attrs ->", item);
+        //                 this.setState({
+        //                     item: {...item}
+        //                 })
+        //             } else {
+        //             }
+        //         })
+        //         .catch(err => {
+        //         });
+        // } else {
+        //     console.log("no hay sesion activa");
+        // }
+
+
+        if (toggleMenuItemsModal === true) {
+            handleToggleMenuItemsModal();
         }
     }
 
-    async getFormList() {
+    const handleGetMenuItemByID = async (itemID) => {
+        await getMenuItemByID(itemID);
+    }
+
+    const handleModalSelectItemOnClick = async (action) => {
+        switch (action) {
+            case actionType.ADDITEMTREE:
+                await handleGetMenuItemByID(selectedID);
+                addItemTree(item);
+                handleToggleMenuItemsModal();
+
+                break;
+            case actionType.UPDATEITEM:
+                await handleGetMenuItemByID(selectedID);
+                handleToggleMenuItemsModal();
+                break;
+            case actionType.DELETEITEM:
+                await handleGetMenuItemByID(selectedID);
+                handleToggleMenuItemsModal();
+                break;
+            default: break;
+        }
+    }
+
+    const getMenuItemList = async () => {
 
         console.log("getFormList");
         //simulación
@@ -116,9 +178,9 @@ class EditorMenus extends Component {
         }
 
         apiResponse.data.forEach(item => {
-            item.className = this.state.classToItem;
-            item.selectItem = this.selectItem;
-            item.getMenuItemByID = this.getMenuItemByID;
+            //item.className = classToItem;
+            item.selectItem = selectItem;
+            item.selectItemAndGetMenuItem = dblClickItem;
             Object.entries(MenuItemType).map((type, i) => {
                 if (i === item.type) {
                     item.type = type[i];
@@ -132,9 +194,8 @@ class EditorMenus extends Component {
                 return null
             })
         });
-        this.setState({
-            itemList: [...apiResponse.data]
-        })
+        setItemList([...apiResponse.data]);
+
         //llamada
         // const token = localStorage.getItem("authToken");
         // if (token !== null && token !== "") {
@@ -150,7 +211,7 @@ class EditorMenus extends Component {
         //             console.log("respuesta "+url,res);
         //             if (res.data.result === 0) {
         //                 res.data.data.forEach(item => {
-        //                     item.className = this.state.classToItem;
+        //                     //item.className = this.state.classToItem;
         //                     item.selectItem = this.selectItem;
         //                     Object.entries(MenuItemType).map((type, i) => {
         //                         if (i === item.type) {
@@ -178,80 +239,82 @@ class EditorMenus extends Component {
         // }
     }
 
-    newOnClick(action) {
-        this.setState({
-            action: action
-        })
-        //this.toggleMenuItemsModal();
+    const addItemTree = (item) => {
+        setMenuTreeList([...menuTreeList, { ...item }]);
     }
 
-    addOnClick(action) {
-        this.setState({
-            action: action
-        })
-        this.toggleMenuItemsModal();
+    const handleAction = (action) => {
+        switch (action) {
+            case actionType.ADDITEMTREE:
+                setAction(action);
+                handleToggleMenuItemsModal();
+                break;
+            case actionType.NEWITEMANDITEMTREE:
+                setAction(action);
+                setItem(itemInitialState);
+                break;
+            case actionType.NEWITEM:
+                setAction(action);
+                setItem(itemInitialState);
+                setSelectedID("");
+                break;
+            case actionType.UPDATEITEM:
+                setAction(action);
+                handleToggleMenuItemsModal();
+                break;
+            case actionType.DELETEITEM:
+                setAction(action);
+                handleToggleMenuItemsModal();
+                break;
+            // case actionType.UPDATEACTUALITEM:
+            // break;
+            // case actionType.DELEACTUALTEITEM:
+            // break;
+            default:
+                setAction(action);
+                break;
+        }
     }
 
-    updateOnClick(action) {
-        this.setState({
-            action: action
-        })
-        this.toggleMenuItemsModal();
-    }
-
-    deleteOnClick(action) {
-        this.setState({
-            action: action
-        })
-        this.toggleMenuItemsModal();
-    }
-
-    setAction(action) {
-        console.log("setAction ->" + action);
-        this.setState({
-            action: action
-        });
-    }
-
-    render() {
-        return (
-            <div id="editorMenus" className='container'>
-                <div className='row justify-content-evenly'>
-                    <div className='col-6'>
-                        <ButtonsContainer>
-                            <button className='button-black button-md' onClick={() => this.addOnClick(actionType.ADD)}>Añadir</button>
-                            <button className='button-red button-md' onClick={() => this.newOnClick(actionType.NEW)}>Nuevo y añadir</button>
-                        </ButtonsContainer>
-                        <MenuPrevisualization />
-
-                    </div>
-                    <div className='col-5'>
-                        <ButtonsContainer>
-                            <button className='button-red button-md' onClick={() => this.newOnClick(actionType.NEW)}>Nuevo</button>
-                            <button className='button-black button-md' onClick={() => this.updateOnClick(actionType.UPDATE)}>Modificar</button>
-                            <button className='button-black button-md' onClick={() => this.deleteOnClick(actionType.DELETE)}>Eliminar</button>
-                        </ButtonsContainer>
-                        <ItemProperties
-                            action={this.state.action}
-                            modal={this.state.toggleMenuItemsModal}
-                            item={this.state.item}
-                        //menuId="prueba"
-                        />
-
-                    </div>
+    return (
+        <div id="editorMenus" className='container' >
+            <div className='row justify-content-evenly'>
+                <div className='col-6'>
+                    <Box className='d-flex w-100 justify-content-evenly m-2'>
+                        <button className='button-black button-md' onClick={() => handleAction(actionType.ADDITEMTREE)}>Añadir</button>
+                        <button className='button-red button-md' onClick={() => handleAction(actionType.NEWITEMANDITEMTREE)}>Nuevo y añadir</button>
+                    </Box>
+                    <MenuPrevisualization
+                        menuTreeList={menuTreeList}
+                        onMenuChange={onMenuChange}
+                    />
                 </div>
-                <MenuItemsModal
-                    modal={this.state.toggleMenuItemsModal}
-                    parentToggle={() => this.toggleMenuItemsModal()}
-                    itemList={this.state.itemList}
-                    selectedID={this.state.selectedID}
-                    action={this.state.action}
-                    setAction={this.setAction}
-                    getMenuItemByID={this.getMenuItemByID}
-                />
+                <div className='col-5'>
+                    <Box className='d-flex w-100 justify-content-evenly m-2'>
+                        <button className='button-red button-md' onClick={() => handleAction(actionType.NEWITEM)}>Nuevo</button>
+                        <button className='button-black button-md' onClick={() => handleAction(actionType.UPDATEITEM)}>Modificar</button>
+                        <button className='button-black button-md' onClick={() => handleAction(actionType.DELETEITEM)}>Eliminar</button>
+                        {/* <button className='button-black button-md' onClick={() => handleAction(actionType.DELETEITEM)}>Modificar actual</button> */}
+                        {/* <button className='button-black button-md' onClick={() => handleAction(actionType.DELETEITEM)}>Eliminar actual</button> */}
+                    </Box>
+                    <ItemProperties
+                        action={action}
+                        modal={toggleMenuItemsModal}
+                        item={item}
+                    //menuId="prueba"
+                    />
+                </div>
             </div>
-        );
-    }
+            <MenuItemsModal
+                modal={toggleMenuItemsModal}
+                parentToggle={handleToggleMenuItemsModal}
+                itemList={itemList}
+                selectedID={selectedID}
+                handleClick={handleModalSelectItemOnClick}
+                action={action}
+            />
+        </div>
+    );
 }
 
 export default EditorMenus;

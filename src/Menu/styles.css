@@ -1,0 +1,93 @@
+
+
+
+.menu {
+  width: auto;
+}
+
+.body {
+  border: 2px solid #629677;
+  padding: 32px;
+  margin-left: 60px;
+  width: 70%;
+}
+
+.form {
+  padding: 24px;
+  border: 2px solid #629677;
+  width: 200px;
+}
+
+.form-line {
+  margin: 16px 0;
+}
+
+.menu-item {
+  padding: 0 16px;
+}
+.menu-item-element {
+  padding: 8px 12px;
+  /* background-color: #629677;*/
+  border: 2px solid #629677;
+  color: #000;
+  margin: 0 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropzone {
+  border: 1px dotted #629677;
+  padding: 2px;
+  font-size: 10px;
+  width: 100%;
+}
+
+.dropzone-wrapper {
+  display: flex;
+  padding: 0 24px;
+  width: 200px;
+}
+.dropzone.is-over {
+  background-color: gray;
+  color: #fff;
+}
+
+.menu-item {
+  /* width: 200px; */
+}
+.menu-item-remove {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  border: 2px solid rgb(112, 96, 111);
+  border-radius: 100%;
+}
+
+.menu-item-remove::before,
+.menu-item-remove::after {
+  content: "";
+  width: 60%;
+  height: 2px;
+  background-color: rgb(112, 96, 111);
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transition: 0.3s transform linear;
+}
+
+.menu-item-remove::before {
+  transform: rotate(45deg);
+}
+.menu-item-remove::after {
+  transform: rotate(-45deg);
+}
+
+.menu-item-remove:hover {
+  cursor: pointer;
+}
+.menu-item-remove:hover::before {
+  transform: rotate(-45deg);
+}
+.menu-item-remove:hover::after {
+  transform: rotate(45deg);
+}

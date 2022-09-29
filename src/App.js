@@ -1,14 +1,12 @@
-import { Component } from 'react';
 import EditorMenus from './EditorMenus';
-class App extends Component {
+function App() {
 
-	render() {
-		return (
-			<div className="App">
-				<EditorMenus />
-			</div>
-		)
-	}
+	return (
+		<div className="App">
+			<EditorMenus />
+		</div>
+	)
+
 }
 
 export default App;

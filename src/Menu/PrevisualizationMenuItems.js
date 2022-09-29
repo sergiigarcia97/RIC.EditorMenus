@@ -7,72 +7,16 @@ class PrevisualizationMenuItems extends Component {
         return (
             <div id='previsualizationMenuItems' className='m-3 p-3 d-flex flex-column align-items-center height-25em'>
                 {
-                    //array.forEach(element => { 
+                    this.props.menuTreeList.map((item, i) => {
+                        return <PrevisualizationMenuItem
+                            key={i}
+                            type={item.type}
+                            title={item.title}
+                        />
+                    })
                 }
-                <PrevisualizationMenuItem 
-                    type={MenuItemType.FOLDER}
-                    title={"Menú principal"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Area usuario"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Perfil"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
-                <PrevisualizationMenuItem 
-                type={MenuItemType.ACTION}
-                title={"Dirección"}
-                />
+
+
             </div>
         );
     }
