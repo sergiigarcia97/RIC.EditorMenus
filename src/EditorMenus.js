@@ -48,7 +48,7 @@ function EditorMenus() {
         setSelectedID(itemID);
     }
 
-    const dblClickItem = async (itemID,actionP) => {
+    const dblClickItem = async (itemID, actionP) => {
         console.log("dblClickItem itemID ->" + itemID)
         console.log("dblClickItem action state ->" + action)
         console.log("dblClickItem action param ->" + actionP)
@@ -65,78 +65,78 @@ function EditorMenus() {
 
     const getMenuItemByID = async (selectedID) => {
         //simulación
-        let apiResponse = {
-            "result": 0,
-            "data": {
-                "menuId": selectedID,
-                "pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==",
-                "menuName": "Servicios chófer",
-                "iconId": 11,
-                "system": false,
-                "type": 1,
-                "optionType": 1,
-                "title": "PM - Servicios chófer",
-                //TODO: añadir menutreeid
-            }
-        }
-        let item = { ...apiResponse.data };
-        Object.entries(MenuItemType).map((type, i) => {
-            if (i === item.type) {
-                item.type = type[i];
-            }
-            return null
-        });
-        Object.entries(MenuItemOptionType).map((optionType, i) => {
-            if (i === item.optionType) {
-                item.optionType = optionType[i];
-            }
-            return null
-        });
+        // let apiResponse = {
+        //     "result": 0,
+        //     "data": {
+        //         "menuId": selectedID,
+        //         "pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==",
+        //         "menuName": "Servicios chófer",
+        //         "iconId": 11,
+        //         "system": false,
+        //         "type": 1,
+        //         "optionType": 1,
+        //         "title": "PM - Servicios chófer",
+        //         //TODO: añadir menutreeid
+        //     }
+        // }
+        // let item = { ...apiResponse.data };
+        // Object.entries(MenuItemType).map((type, i) => {
+        //     if (i === item.type) {
+        //         item.type = type[i];
+        //     }
+        //     return null
+        // });
+        // Object.entries(MenuItemOptionType).map((optionType, i) => {
+        //     if (i === item.optionType) {
+        //         item.optionType = optionType[i];
+        //     }
+        //     return null
+        // });
 
-        console.log("item", item)
-        setItem(prevItem => ({
-            ...item
-        }));
+        // console.log("item", item)
+        // setItem(prevItem => ({
+        //     ...item
+        // }));
 
         //llamada
-        // const token = localStorage.getItem("authToken");
-        // if (token !== null && token !== "") {
-        //     let url = CORE_BASE_URL + "/GetMenuItembyID/" + selectedID;
-        //     const headers = {
-        //         "Content-Type": "application/json;charset=utf-8",
-        //         "Authorization": "bearer " + token.replace(/"/g, '')
-        //     }
-        //     console.log("ItemProperties GetMenuItembyID url ->" + url);
-        //     axios
-        //         .get(url, { headers })
-        //         .then(res => {
-        //             console.log("respuesta " + url, res);
-        //             if (res.data.result === 0) {
-        //                 let item = { ...res.data.data };
-        //                 Object.entries(MenuItemType).map((type, i) => {
-        //                     if (i === item.type) {
-        //                         item.type = type[i];
-        //                     }
-        //                     return null
-        //                 })
-        //                 Object.entries(MenuItemOptionType).map((optionType, i) => {
-        //                     if (i === item.optionType) {
-        //                         item.optionType = optionType[i];
-        //                     }
-        //                     return null
-        //                 })
-        //                 console.log("ItemProperties getitembyid attrs ->", item);
-        //                 this.setState({
-        //                     item: {...item}
-        //                 })
-        //             } else {
-        //             }
-        //         })
-        //         .catch(err => {
-        //         });
-        // } else {
-        //     console.log("no hay sesion activa");
-        // }
+        const token = localStorage.getItem("authToken");
+        if (token !== null && token !== "") {
+            let url = CORE_BASE_URL + "/GetMenuItembyID/" + selectedID;
+            const headers = {
+                "Content-Type": "application/json;charset=utf-8",
+                "Authorization": "bearer " + token.replace(/"/g, '')
+            }
+            console.log("ItemProperties GetMenuItembyID url ->" + url);
+            axios
+                .get(url, { headers })
+                .then(res => {
+                    console.log("respuesta " + url, res);
+                    if (res.data.result === 0) {
+                        let item = { ...res.data.data };
+                        Object.entries(MenuItemType).map((type, i) => {
+                            if (i === item.type) {
+                                item.type = type[i];
+                            }
+                            return null
+                        })
+                        Object.entries(MenuItemOptionType).map((optionType, i) => {
+                            if (i === item.optionType) {
+                                item.optionType = optionType[i];
+                            }
+                            return null
+                        })
+                        console.log("ItemProperties getitembyid attrs ->", item);
+                        setItem(prevItem => ({
+                            ...item
+                        }));
+                    } else {
+                    }
+                })
+                .catch(err => {
+                });
+        } else {
+            console.log("no hay sesion activa");
+        }
 
 
         if (toggleMenuItemsModal === true) {
@@ -172,71 +172,72 @@ function EditorMenus() {
 
         console.log("getFormList");
         //simulación
-        let apiResponse = {
-            "result": 0,
-            "data": [{ "menuId": "2925abad-d588-4901-a97f-0d292bb04ef4", "pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==", "menuName": "Servicios chófer", "iconId": 11, "system": false, "type": 1, "optionType": 1 }, { "menuId": "3b8e2ca5-36b9-410e-834d-db954314c931", "pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==", "menuName": "Servicios chófer", "iconId": 11, "system": false, "type": 1, "optionType": 1 }, { "menuId": "7470bc5d-1724-41fc-97b7-f9cb70024971", "pageName": "eee", "menuName": "aaa", "iconId": 99, "system": false, "type": 1, "optionType": 1 }, { "menuId": "e5b59d37-3071-4d34-ae52-7c79d3c38896", "pageName": "vczxvzxcv", "menuName": "vcxzvxzc", "iconId": 99, "system": false, "type": 1, "optionType": 1 }]
-        }
+        // let apiResponse = {
+        //     "result": 0,
+        //     "data": [{ "menuId": "2925abad-d588-4901-a97f-0d292bb04ef4", "pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==", "menuName": "Servicios chófer", "iconId": 11, "system": false, "type": 1, "optionType": 1 }, { "menuId": "3b8e2ca5-36b9-410e-834d-db954314c931", "pageName": "form/OHBCcHNTVlRoMjVvaFh3QmVOdG9wMzVDVm9MNTNkZlZhNktYNVpFTXZVV2JEa21JOXN6ZU84TmxTWDdkNXZJVw==", "menuName": "Servicios chófer", "iconId": 11, "system": false, "type": 1, "optionType": 1 }, { "menuId": "7470bc5d-1724-41fc-97b7-f9cb70024971", "pageName": "eee", "menuName": "aaa", "iconId": 99, "system": false, "type": 1, "optionType": 1 }, { "menuId": "e5b59d37-3071-4d34-ae52-7c79d3c38896", "pageName": "vczxvzxcv", "menuName": "vcxzvxzc", "iconId": 99, "system": false, "type": 1, "optionType": 1 }]
+        // }
 
-        apiResponse.data.forEach(item => {
-            //item.className = classToItem;
-            item.selectItem = selectItem;
-            item.selectItemAndGetMenuItem = dblClickItem;
-            Object.entries(MenuItemType).map((type, i) => {
-                if (i === item.type) {
-                    item.type = type[i];
-                }
-                return null
-            })
-            Object.entries(MenuItemOptionType).map((optionType, i) => {
-                if (i === item.optionType) {
-                    item.optionType = optionType[i];
-                }
-                return null
-            })
-        });
-        setItemList([...apiResponse.data]);
+        // apiResponse.data.forEach(item => {
+        //     //item.className = classToItem;
+        //     item.selectItem = selectItem;
+        //     item.selectItemAndGetMenuItem = dblClickItem;
+        //     Object.entries(MenuItemType).map((type, i) => {
+        //         if (i === item.type) {
+        //             item.type = type[i];
+        //         }
+        //         return null
+        //     })
+        //     Object.entries(MenuItemOptionType).map((optionType, i) => {
+        //         if (i === item.optionType) {
+        //             item.optionType = optionType[i];
+        //         }
+        //         return null
+        //     })
+        // });
+        // setItemList([...apiResponse.data]);
+
+
 
         //llamada
-        // const token = localStorage.getItem("authToken");
-        // if (token !== null && token !== "") {
-        //     let url = CORE_BASE_URL + "/GetMenuItemListNew";
-        //     const headers = {
-        //         "Content-Type": "application/json;charset=utf-8",
-        //         "Authorization": "bearer " + token.replace(/"/g, '')
-        //     }
-        //     console.log("MenuItemsModal getFormList url ->" + url);
-        //     axios
-        //         .get(url, { headers })
-        //         .then(res => {
-        //             console.log("respuesta "+url,res);
-        //             if (res.data.result === 0) {
-        //                 res.data.data.forEach(item => {
-        //                     //item.className = this.state.classToItem;
-        //                     item.selectItem = this.selectItem;
-        //                     Object.entries(MenuItemType).map((type, i) => {
-        //                         if (i === item.type) {
-        //                             item.type = type[i];
-        //                         }
-        //                         return null
-        //                     })
-        //                     Object.entries(MenuItemOptionType).map((optionType, i) => {
-        //                         if (i === item.optionType) {
-        //                             item.optionType = optionType[i];
-        //                         }
-        //                         return null
-        //                     })
-        //                 });
-        //                 this.setState({
-        //                     itemList: [...res.data.data]
-        //                 })
-        //             } else {
-        //             }
-        //         })
-        //         .catch(err => {
-        //         });
-        // } else {
-        //     console.log("no hay sesion activa");
-        // }
+        const token = localStorage.getItem("authToken");
+        if (token !== null && token !== "") {
+            let url = CORE_BASE_URL + "/GetMenuItemListNew";
+            const headers = {
+                "Content-Type": "application/json;charset=utf-8",
+                "Authorization": "bearer " + token.replace(/"/g, '')
+            }
+            console.log("MenuItemsModal getFormList url ->" + url);
+            axios
+                .get(url, { headers })
+                .then(res => {
+                    console.log("respuesta " + url, res);
+                    if (res.data.result === 0) {
+                        res.data.data.forEach(item => {
+                            //item.className = this.state.classToItem;
+                            item.selectItem = selectItem;
+                            item.selectItemAndGetMenuItem = dblClickItem;
+                            Object.entries(MenuItemType).map((type, i) => {
+                                if (i === item.type) {
+                                    item.type = type[i];
+                                }
+                                return null
+                            })
+                            Object.entries(MenuItemOptionType).map((optionType, i) => {
+                                if (i === item.optionType) {
+                                    item.optionType = optionType[i];
+                                }
+                                return null
+                            })
+                        });
+                        setItemList([...res.data.data]);
+                    } else {
+                    }
+                })
+                .catch(err => {
+                });
+        } else {
+            console.log("no hay sesion activa");
+        }
     }
 
     const addItemTree = (item) => {

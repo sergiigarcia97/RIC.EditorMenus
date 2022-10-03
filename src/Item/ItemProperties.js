@@ -111,6 +111,8 @@ function ItemProperties(props) {
                 "Authorization": "bearer " + token.replace(/"/g, '')
             }
             let body = { ...item };
+            body.type = Object.values(MenuItemType).indexOf(item.type);
+            body.optionType = Object.values(MenuItemOptionType).indexOf(item.optionType);
             console.log("ItemProperties addItem url ->" + url, body);
             axios
                 .put(url, JSON.stringify(body), { headers })
@@ -136,6 +138,8 @@ function ItemProperties(props) {
                 "Authorization": "bearer " + token.replace(/"/g, '')
             }
             let body = { ...item };
+            body.type = Object.values(MenuItemType).indexOf(item.type);
+            body.optionType = Object.values(MenuItemOptionType).indexOf(item.optionType);
             console.log("ItemProperties addItem url ->" + url, body);
             axios
                 .delete(url, { headers })

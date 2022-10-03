@@ -32,7 +32,9 @@ root.render(
 //     const root = ReactDOM.createRoot(document.getElementById('RICEditorMenus'));
 //     root.render(
 //       <React.StrictMode>
-//         <App />
+//         <DndProvider backend={HTML5Backend}>
+//           <App />
+//         </DndProvider>
 //       </React.StrictMode>
 //     );
 //   }
